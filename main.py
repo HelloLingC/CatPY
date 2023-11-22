@@ -14,11 +14,11 @@ def handleMessages(messages):
         if linkNum >= req_nodes_num:
             break
         text = msg.text
-        if text.startwith("ss://"):
+        if text.startswith("ss://"):
             print("A SS node")
-        elif text.startwith("vmess://"):
+        elif text.startswith("vmess://"):
             print("A VMess node")
-        elif text.startwith("trojan://"):
+        elif text.startswith("trojan://"):
             print("A trojan node")
         else:
             # Unknown message
