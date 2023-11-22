@@ -2,6 +2,7 @@
 from telethon import TelegramClient, events
 from urllib.parse import urlencode
 import requests
+import re
 import handlers
 from config import *
 
@@ -13,7 +14,10 @@ def handleMessages(messages):
     for msg in messages:
         if linkNum >= req_nodes_num:
             break
-        text = msg.text
+        match = re.search('`([^`]+)`', msg.text)
+        if not match:
+           continue
+        text = match.group(1)
         print(text)
         if text.startswith("ss://"):
             print("A SS node")
