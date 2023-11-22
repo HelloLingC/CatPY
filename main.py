@@ -1,6 +1,6 @@
 # from pathlib import Path
 from telethon import TelegramClient, events
-from urllib.parse import urlencode
+from urllib.parse import quote
 import requests
 import re
 import handlers
@@ -18,7 +18,6 @@ def handleMessages(messages):
         if not match:
            continue
         text = match.group(1)
-        print(text)
         if text.startswith("ss://"):
             print("A SS node")
         elif text.startswith("vmess://"):
@@ -32,7 +31,8 @@ def handleMessages(messages):
         linkCollection += "{text}|"
         linkNum += 1
     # Finish
-    linkCollection = urlencode(linkCollection[:-1])
+    # Urlencode the query param
+    linkCollection = quote(linkCollection[:-1])
     clashCfg = convert2Clash(linkCollection)
     if clashCfg == "":
         return
