@@ -44,10 +44,11 @@ def convert2Clash(text):
 
 async def main():
     me = await client.get_me()
-    print("Login succeed!\nUsername: {me.username}, ID: {me.id}\n")
+    us = me.username
+    print("Login succeed!\nUsername: {us}, ID: {me.id}\n")
     chat = await client.get_entity(chat_id)
     messages = await client.get_messages(chat, limit=req_nodes_num*8)
-
+    handleMessages(messages)
     # client.add_event_handler(handlers.command_handler, events.NewMessage(outgoing=True, pattern="^!"))
     
 with client:
