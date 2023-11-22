@@ -28,7 +28,7 @@ def handleMessages(messages):
             # Unknown message
             continue
         
-        linkCollection += "{text}|"
+        linkCollection += text + "|"
         linkNum += 1
     # Finish
     # Urlencode the query param
@@ -49,8 +49,7 @@ def convert2Clash(text):
 
 async def main():
     me = await client.get_me()
-    us = me.username
-    print('Login succeed!\nUsername: {us}, ID: {me.id}\n' + us)
+    print('Login succeed!\nUsername: {me.username}, ID: {me.id}\n'.format())
     chat = await client.get_entity(chat_id)
     messages = await client.get_messages(chat, limit=req_nodes_num*8)
     handleMessages(messages)
