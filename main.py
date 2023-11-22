@@ -14,6 +14,7 @@ def handleMessages(messages):
         if linkNum >= req_nodes_num:
             break
         text = msg.text
+        print(text)
         if text.startswith("ss://"):
             print("A SS node")
         elif text.startswith("vmess://"):
