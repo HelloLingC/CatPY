@@ -40,17 +40,17 @@ def handleMessages(messages):
         file.write(clashCfg)
 
 def convert2Clash(text):
-    api = converter_api + "/sub?target=clash&url={text}"
+    api = converter_api + "/sub?target=clash&url=" + text
     res = requests.get(api)
     if res.status_code != 200:
-         print("Error: {resstatus_code}")
+         print("Error: " + res.status_code)
          return ""
     return res.text
 
 async def main():
     me = await client.get_me()
     us = me.username
-    print("Login succeed!\nUsername: {us}, ID: {me.id}\n")
+    print('Login succeed!\nUsername: {us}, ID: {me.id}\n' + us)
     chat = await client.get_entity(chat_id)
     messages = await client.get_messages(chat, limit=req_nodes_num*8)
     handleMessages(messages)
