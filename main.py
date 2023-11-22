@@ -46,7 +46,7 @@ async def main():
     me = await client.get_me()
     print("Login succeed!\nUsername: {me.username}, ID: {me.id}\n")
     chat = await client.get_entity(chat_id)
-    messages = await client.get_message(chat, limit=req_nodes_num*8)
+    messages = await client.get_messages(chat, limit=req_nodes_num*8)
 
     # client.add_event_handler(handlers.command_handler, events.NewMessage(outgoing=True, pattern="^!"))
     
