@@ -40,7 +40,7 @@ def convert2Clash(text):
     if res.status_code != 200:
          print("Error: {resstatus_code}")
          return ""
-     return res.text
+    return res.text
 
 async def main():
     me = await client.get_me()
