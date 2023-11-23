@@ -25,7 +25,7 @@ async def fetchTask():
         await asyncio.sleep(fetch_task_interval)
 
 def getCurrentTime():
-    return datetime.date().strftime("%Y-%m-%d %H:%M:%S")
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 @client.on(events.NewMessage(outgoing=True))
 async def command_handler(event):
