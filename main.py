@@ -11,6 +11,7 @@ lasttime_fetch_exec = None
 client = TelegramClient(session_path, api_id, api_hash)
 
 async def doFetch():
+    global lasttime_fetch_exec
     me = await client.get_me()
     print('Task starts execute!\nUsername: {}, ID: {}\n'.format(me.username, me.id))
     chat = await client.get_entity(chat_id)
@@ -19,7 +20,6 @@ async def doFetch():
     lasttime_fetch_exec = datetime.now()
 
 async def fetchTask():
-    global lasttime_fetch_exec
     while True:
         await doFetch()
         await asyncio.sleep(fetch_task_interval)
