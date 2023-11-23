@@ -6,7 +6,7 @@ from datetime import datetime
 import fetch
 from config import *
 
-lasttime_fetch_exec = 0
+lasttime_fetch_exec = None
 
 client = TelegramClient(session_path, api_id, api_hash)
 
@@ -24,11 +24,14 @@ async def fetchTask():
 async def command_handler(event):
     print(event.raw_text)
     if '/status' in event.raw_text:
-        lastExec = lasttime_fetch_exec.strftime("%Y-%m-%d %H:%M:%S")
         print("Status Command >")
-        await event.respond("Last exec time: " + lastExec)
+        if lasttime_fetch_exec is None:
+            await event.respond("Haven't exec")
+        else:
+            lastExec = lasttime_fetch_exec.strftime("%Y-%m-%d %H:%M:%S")
+            await event.respond("Last exec time: " + lastExec)
     if '/start' in event.raw_text:
-        asyncio.ensure_future(fetchTask)
+        asyncio.ensure_future(fetchTask())
 
 if __name__ == "__main__":
     print("Telefetch start to connect\n")
