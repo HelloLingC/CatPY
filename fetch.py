@@ -3,8 +3,6 @@ import re
 from urllib.parse import quote
 from config import *
 
-
-
 def handleMessages(messages):
     linkNum = 0
     linkCollection = ""
@@ -24,7 +22,6 @@ def handleMessages(messages):
         else:
             # Unknown message
             continue
-        
         linkCollection += text + "|"
         linkNum += 1
     # Finish
