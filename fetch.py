@@ -37,11 +37,10 @@ def handleMessages(messages):
         file.write(clashCfg)
 
 def convert2Clash(text):
-    api = converter_api + "/clash&append_type=true&url=" + text
+    api = converter_api + "/sub?target=clash&append_type=true&url=" + text
     res = requests.get(api)
     if res.status_code != 200:
-         print("Error: " + res.status_code)
+         print("Error: " + str(res.status_code))
          return ""
-    # TODO
     modText = res.text.replace("t.me/ConfigsHub", "US 美國 1x")
     return modText
