@@ -22,18 +22,15 @@ async def fetchTask():
 
 @client.on(events.NewMessage(outgoing=True))
 async def command_handler(event):
+    print(event.raw_text)
     if '/status' in event.raw_text:
         lastExec = lasttime_fetch_exec.strftime("%Y-%m-%d %H:%M:%S")
         print("Status Command >")
         await event.respond("Last exec time: " + lastExec)
-async def main():
-    print("Telefetch start to connect\n")
-    await client.start()
-    #await client.connect()
-    print("Telefetch is running")
-    client.run_until_disconnected()
-    fetchTask()
-    # await asyncio.gather(client.run_until_disconnected(), fetchTask())
+    if '/start' in event.raw_text:
+        asyncio.ensure_future(fetchTask)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    print("Telefetch start to connect\n")
+    client.start()
+    client.run_until_disconnected()
