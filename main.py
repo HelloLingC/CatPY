@@ -1,60 +1,34 @@
 # from pathlib import Path
 from telethon import TelegramClient, events
-from urllib.parse import quote
-import requests
-import re
+import asyncio
 import handlers
+from datetime import datetime
+import fetch
 from config import *
+
+lasttime_fetch_exec = 0
 
 client = TelegramClient(session_path, api_id, api_hash)
 
-def handleMessages(messages):
-    linkNum = 0
-    linkCollection = ""
-    for msg in messages:
-        if linkNum >= req_nodes_num:
-            break
-        match = re.search('`([^`]+)`', msg.text)
-        if not match:
-           continue
-        text = match.group(1)
-        if text.startswith("ss://"):
-            print("A SS node")
-        elif text.startswith("vmess://"):
-            print("A VMess node")
-        elif text.startswith("trojan://"):
-            print("A trojan node")
-        else:
-            # Unknown message
-            continue
-        
-        linkCollection += text + "|"
-        linkNum += 1
-    # Finish
-    # Urlencode the query param
-    linkCollection = quote(linkCollection[:-1])
-    clashCfg = convert2Clash(linkCollection)
-    if clashCfg == "":
-        return
-    with open(outputFoldername + 'clash_config.yaml', 'w') as file:
-        file.write(clashCfg)
+async def fetchTask():
+    while True:
+        me = await client.get_me()
+        print('Task starts execute!\nUsername: {}, ID: {}\n'.format(me.username, me.id))
+        chat = await client.get_entity(chat_id)
+        messages = await client.get_messages(chat, limit=req_nodes_num*8)
+        fetch.handleMessages(messages)
+        lasttime_fetch_exec = datetime.now()
+        await asyncio.sleep(fetch_task_interval)
 
-def convert2Clash(text):
-    api = converter_api + "/sub?target=clash&url=" + text
-    res = requests.get(api)
-    if res.status_code != 200:
-         print("Error: " + res.status_code)
-         return ""
-    return res.text
+@client.on(events.NewMessage(outgoing=True))
+async def command_handler(event):
+    if '/status' in event.raw_text:
+        lastExec = lasttime_fetch_exec.strftime("%Y-%m-%d %H:%M:%S")
+        print("Status Command >")
+        await event.respond("Last exec time: " + lastExec)
 
-async def main():
-    me = await client.get_me()
-    print('Login succeed!\nUsername: {}, ID: {}\n', me.username, me.id)
-    chat = await client.get_entity(chat_id)
-    messages = await client.get_messages(chat, limit=req_nodes_num*8)
-    handleMessages(messages)
-    # client.add_event_handler(handlers.command_handler, events.NewMessage(outgoing=True, pattern="^!"))
-    
-with client:
-    client.loop.run_until_complete(main())
+asyncio.ensure_future(fetchTask())
+
+client.start()
+client.run_until_disconnected()
     
