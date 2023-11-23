@@ -11,7 +11,7 @@ lasttime_fetch_exec = None
 client = TelegramClient(session_path, api_id, api_hash)
 
 async def fetchTask():
-    nonlocal lasttime_fetch_exec
+    global lasttime_fetch_exec
     while True:
         me = await client.get_me()
         print('Task starts execute!\nUsername: {}, ID: {}\n'.format(me.username, me.id))
