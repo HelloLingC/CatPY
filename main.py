@@ -10,7 +10,7 @@ lasttime_fetch_exec = None
 
 client = TelegramClient(session_path, api_id, api_hash)
 
-async def fetch():
+async def doFetch():
     me = await client.get_me()
     print('Task starts execute!\nUsername: {}, ID: {}\n'.format(me.username, me.id))
     chat = await client.get_entity(chat_id)
@@ -21,7 +21,7 @@ async def fetch():
 async def fetchTask():
     global lasttime_fetch_exec
     while True:
-        await fetch()
+        await doFetch()
         await asyncio.sleep(fetch_task_interval)
 
 def getCurrentTime():
@@ -30,7 +30,8 @@ def getCurrentTime():
 @client.on(events.NewMessage(outgoing=True))
 async def command_handler(event):
     # print("Message recevied: " + event.raw_text)
-    headMsg = f"**{getCurrentTime}**\n"
+    time = getCurrentTime()
+    headMsg = f"**{time}**\n"
     if '!status' in event.raw_text:
         print("Status Command >")
         if lasttime_fetch_exec is None:
