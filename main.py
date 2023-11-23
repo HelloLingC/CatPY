@@ -30,8 +30,10 @@ async def main():
     print("Telefetch start to connect\n")
     await client.start()
     await client.connect()
-    await asyncio.gather(client.run_until_disconnected(), fetchTask())
     print("Telefetch is running")
+    client.run_until_disconnected()
+    fetchTask()
+    # await asyncio.gather(client.run_until_disconnected(), fetchTask())
 
 if __name__ == "__main__":
     asyncio.run(main())
