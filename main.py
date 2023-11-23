@@ -29,7 +29,7 @@ async def command_handler(event):
 async def main():
     print("Telefetch start to connect\n")
     await client.start()
-    await client.connect()
+    #await client.connect()
     print("Telefetch is running")
     client.run_until_disconnected()
     fetchTask()
